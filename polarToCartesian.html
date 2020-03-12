@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Polar to Cartesian Coordinates</title>
+
+<script type="text/javascript">
+var distance = 6;
+var direction = 0;
+var directionPi = 0;
+
+window.requestAnimationFrame(draw);
+
+function draw() {
+	var ctx = document.getElementById('canvas').getContext('2d');
+	ctx.clearRect(0, 0, 640, 480); // limpiar canvas
+
+	ctx.fillStyle = "#000000";
+	ctx.fillRect(0, 0, 640, 480);
+
+	var x = 320 + distance * Math.cos(directionPi);
+	var y = 320 + distance * Math.sin(directionPi);
+
+	ctx.fillStyle = "#ff0000";
+	ctx.beginPath();
+    ctx.arc(x, y, 12, 0, Math.PI*2);
+    ctx.fill();
+    ctx.closePath();
+
+    direction += 1;
+    directionPi = direction * Math.PI / 180;
+
+	window.requestAnimationFrame(draw);
+}
+
+</script>
+
+</head>
+<body>
+
+<canvas id="canvas" width="640" height="480"></canvas>
+
+</body>
+</html>
