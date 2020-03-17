@@ -1,11 +1,11 @@
 //import Scene from './Scene.js';
 //import Bullet from './Bullet.js';
 
-let scene = new Scene(640, 480);
+let bm = new BulletManager(640, 480);
 
 window.requestAnimationFrame(draw);
 
-//console.log(scene);
+//console.log(bm);
 
 var frame = 0; // counts all the frames
 var aux = 0; // it's used for some calculations
@@ -17,7 +17,7 @@ var bulletPattern1 = function() {
 		var speed = getRandomInt(2, 4);
 
 		for (var i = 0; i < 50; i++) {
-			scene.addBullet(x, y, i*360/50, speed);
+			bm.addBullet(x, y, i*360/50, speed);
 		}
 	}
 }
@@ -29,7 +29,7 @@ var bulletPattern2 = function() {
 		var speed = getRandomInt(2, 4);
 
 		for (var i = 0; i < 100; i++) {
-			scene.addBullet(x, y, i*360/100, 4);
+			bm.addBullet(x, y, i*360/100, 4);
 		}
 	}
 }
@@ -42,12 +42,12 @@ var bulletPattern3 = function() {
 
 		for (var i = 0; i < 12; i++) {
 			for (var j = 2; j < 5; j++) {
-				scene.addBullet(aux, 50, i*360/12 - aux/2, j/10+1);
+				bm.addBullet(aux, 50, i*360/12 - aux/2, j/10+1);
 			}
 		}
 	}
 
-	if (aux >= scene.width) aux = 0;
+	if (aux >= bm.width) aux = 0;
 }
 
 var bulletPattern4 = function() {
@@ -58,12 +58,12 @@ var bulletPattern4 = function() {
 
 		for (var i = 0; i < 6; i++) {
 			for (var j = 2; j < 10; j++) {
-				scene.addBullet(aux, 50, i*360/6 - aux/2, j/10+1);
+				bm.addBullet(aux, 50, i*360/6 - aux/2, j/10+1);
 			}
 		}
 	}
 
-	if (aux >= scene.width) aux = 0;
+	if (aux >= bm.width) aux = 0;
 }
 
 var currentPattern = bulletPattern1;
@@ -72,18 +72,18 @@ function draw() {
 	var ctx = document.getElementById('canvas').getContext('2d');
 
 	//ctx.globalCompositeOperation = 'destination-over';
-	ctx.clearRect(0, 0, scene.width, scene.height); // limpiar canvas
+	ctx.clearRect(0, 0, bm.width, bm.height); // limpiar canvas
 
 	ctx.fillStyle = "#000000";
-	ctx.fillRect(0, 0, scene.width, scene.height);
+	ctx.fillRect(0, 0, bm.width, bm.height);
 
 	currentPattern();
 
-	scene.update();
+	bm.update();
 
-	for (var i = 0; i < scene.bullets.length; i++) {
-		var x = scene.bullets[i].x;
-		var y = scene.bullets[i].y;
+	for (var i = 0; i < bm.bullets.length; i++) {
+		var x = bm.bullets[i].x;
+		var y = bm.bullets[i].y;
 
 		ctx.fillStyle = "#ff0000";
 		ctx.beginPath();

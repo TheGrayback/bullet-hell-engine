@@ -1,60 +1,50 @@
-//import Bullet from './Bullet.js';
-
 class Scene {
-	constructor(width, height) {
-		this.width = width;
-		this.height = height;
-		this.bullets = [];
+	constructor() {
+		this.frame = 0;
+		this.aux = 0;
+		this.bm = new BulletManager(640, 480);
+		this.patterns = {};
+		this.currentPattern = null;
 	}
 
-	addBullet(x, y, direction, speed) {
-		this.bullets.push(new Bullet(x, y, direction, speed, this));
+	start() {
+		// Arrow function must be used due to the "this" context being detached
+		window.requestAnimationFrame(() => this.draw());
 	}
 
-	update() {
-		if (this.bullets.length == 0) {
-			console.log("there are no bullets to update");
-			return;
+	addPattern(name, callback) {
+		this.patterns[name] = callback;
+	}
+
+	setCurrentPattern(name) {
+		this.currentPattern = this.patterns[name];
+	}
+
+	draw() {
+		var ctx = document.getElementById('canvas').getContext('2d');
+
+		ctx.clearRect(0, 0, this.bm.width, this.bm.height); // clean canvas
+
+		ctx.fillStyle = "#000000";
+		ctx.fillRect(0, 0, this.bm.width, this.bm.height);
+
+		this.currentPattern(); // Run current bullet pattern
+
+		this.bm.update();
+
+		for (var i = 0; i < this.bm.bullets.length; i++) {
+			var x = this.bm.bullets[i].x;
+			var y = this.bm.bullets[i].y;
+
+			ctx.fillStyle = "#ff0000";
+			ctx.beginPath();
+		    ctx.arc(x, y, 6, 0, Math.PI*2);
+		    ctx.fill();
+		    ctx.closePath();
 		}
 
-		var deleteBullets = [];
+		this.frame++;
 
-		this.bullets.forEach(function callback(currentValue, index, array) {
-			if (!currentValue.update()) {
-				currentValue.on = false;
-				//deleteBullets.push(index);
-				//array.splice(index, 1);
-			}
-		});
-
-		/*for (var i = 0; i < this.bullets.length; i++) {
-			// Update bullet
-			// If the bullet cannot be updated, remove it
-			if (!this.bullets[i].update()) {
-				console.log("delete bullet " + i);
-				//deleteBullets.push(i);
-				this.bullets.splice(i, 1);
-			}
-		}*/
-
-		// Recorrer balas apagadas y sacarlas
-		this.bullets.forEach(function callback(currentValue, index, array) {
-			if (currentValue.on === false) {
-				//console.log(currentValue);
-				delete array[index];
-				array.splice(index, 1);
-			}
-		});
-
-		/*console.log(deleteBullets);
-		for (var j = 0; j < deleteBullets.length; j++) {
-		 	var index = deleteBullets[j];
-		 	this.bullets.splice(index, 1);
-		}*/
-
-		//console.log(this.bullets.length);
+		window.requestAnimationFrame(() => this.draw()); // Repeat
 	}
 }
-
-//export { Scene };
-//export default Scene;
