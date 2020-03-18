@@ -7,10 +7,6 @@ class BulletManager {
 		this.bullets = [];
 	}
 
-	addBullet(x, y, direction, speed) {
-		this.bullets.push(new Bullet(x, y, direction, speed, this));
-	}
-
 	update() {
 		if (this.bullets.length == 0) {
 			console.log("there are no bullets to update");
@@ -27,16 +23,6 @@ class BulletManager {
 			}
 		});
 
-		/*for (var i = 0; i < this.bullets.length; i++) {
-			// Update bullet
-			// If the bullet cannot be updated, remove it
-			if (!this.bullets[i].update()) {
-				console.log("delete bullet " + i);
-				//deleteBullets.push(i);
-				this.bullets.splice(i, 1);
-			}
-		}*/
-
 		// Recorrer balas apagadas y sacarlas
 		this.bullets.forEach(function callback(currentValue, index, array) {
 			if (currentValue.on === false) {
@@ -45,14 +31,70 @@ class BulletManager {
 				array.splice(index, 1);
 			}
 		});
+	}
 
-		/*console.log(deleteBullets);
-		for (var j = 0; j < deleteBullets.length; j++) {
-		 	var index = deleteBullets[j];
-		 	this.bullets.splice(index, 1);
-		}*/
+	addBullet(x, y, direction, speed) {
+		this.bullets.push(new Bullet(x, y, direction, speed, this));
+	}
 
-		//console.log(this.bullets.length);
+	addArc(x, y, direction, speed, amount, spread) {
+		var directionIncrement = spread / amount;
+
+		if (amount <= 0) return;
+
+		if (amount % 2 != 0) {
+			// Odd amount, centered
+			this.addBullet(x, y, direction, speed);
+
+			for (var i = 1; i <= (amount-1)/2; i++) {
+				this.addBullet(x, y, direction-i*directionIncrement, speed);
+				this.addBullet(x, y, direction+i*directionIncrement, speed);
+			}
+		} else {
+			// Even amount, free space in the middle
+			for (var i = 0; i < amount/2; i++) {
+				this.addBullet(x, y, (direction-directionIncrement/2)-i*directionIncrement, speed);
+				this.addBullet(x, y, (direction+directionIncrement/2)+i*directionIncrement, speed);
+			}
+		}
+	}
+
+	addCircle(x, y, direction, speed, amount) {
+		for (var i = 0; i < amount; i++) {
+			this.addBullet(x, y, direction+i*360/amount, speed);
+		}
+	}
+
+	addLine(x, y, direction, minSpeed, maxSpeed, amount) {
+		var speedDiff = maxSpeed - minSpeed;
+		var speedIncrement = speedDiff / (amount - 1);
+
+		for (var i = 0; i < amount; i++) {
+			var currentSpeed = minSpeed + i * speedIncrement;
+			this.addBullet(x, y, direction, minSpeed+i*speedIncrement);
+		}
+	}
+
+	addMultiArc(x, y, direction, minSpeed, maxSpeed, arcAmount, lineAmount, spread) {
+		var speedDiff = maxSpeed - minSpeed;
+		var speedIncrement = speedDiff / (arcAmount - 1);
+
+		for (var i = 0; i < arcAmount; i++) {
+			var currentSpeed = minSpeed + i * speedIncrement;
+			this.addArc(x, y, direction, currentSpeed, lineAmount, spread);
+			//this.addBullet(x, y, direction, minSpeed+i*speedIncrement);
+		}
+	}
+
+	addMultiCircle(x, y, direction, minSpeed, maxSpeed, circleAmount, lineAmount) {
+		var speedDiff = maxSpeed - minSpeed;
+		var speedIncrement = speedDiff / (circleAmount - 1);
+
+		for (var i = 0; i < circleAmount; i++) {
+			var currentSpeed = minSpeed + i * speedIncrement;
+			this.addCircle(x, y, direction, currentSpeed, lineAmount);
+			//this.addBullet(x, y, direction, minSpeed+i*speedIncrement);
+		}
 	}
 }
 

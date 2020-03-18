@@ -16,14 +16,19 @@
 	
 	<br>
 
-	<a href="javascript:currentPattern = bulletPattern1;">Pattern 1</a>
-	<a href="javascript:currentPattern = bulletPattern2;">Pattern 2</a>
-	<a href="javascript:currentPattern = bulletPattern3;">Pattern 3</a>
-	<a href="javascript:currentPattern = bulletPattern4;">Pattern 4</a>
+	<a href="javascript:scene.setCurrentPattern('pattern1');">Pattern 1</a>
+	<a href="javascript:scene.setCurrentPattern('pattern2');">Pattern 2</a>
+	<a href="javascript:scene.setCurrentPattern('pattern3');">Pattern 3</a>
+	<a href="javascript:scene.setCurrentPattern('pattern4');">Pattern 4</a>
 
 	<br>
 
 	<a href="javascript:fullscreen()">Fullscreen</a>
+
+	<br>
+
+	<a href="javascript:scene.bm.addBullet(10, 450, 0, 1);">1 bullet</a>
+	<a href="javascript:scene.bm.addArc(10, 300, 0, 1, 5, 20);">Arc</a>
 	
 </body>
 </html>
