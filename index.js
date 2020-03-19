@@ -1,3 +1,6 @@
+let SCREEN_WIDTH = 640;
+let SCREEN_HEIGHT = 480;
+
 let scene = new Scene();
 
 // TODO The patterns should be instantiated from a factory class
@@ -58,6 +61,6 @@ scene.addPattern('pattern4', function() {
 	if (this.aux >= this.bm.width) this.aux = 0;
 });
 
-scene.setCurrentPattern('pattern1');
+scene.setCurrentPattern('pattern4');
 
 scene.start();
